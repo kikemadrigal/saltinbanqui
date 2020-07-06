@@ -1,0 +1,77 @@
+Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2020.07.06 - 06:39:04]
+
+src/rutinas.asm
+Errors: 0
+
+       1   00:0000                              output "rutinas.bin"
+       2   00:EA60                      
+       3   00:EA60  FE                      db   #fe               ; ID archivo binario, siempre hay que poner el mismo 0FEh
+       4   00:EA61  60 EA                   dw   INICIO            ; dirección de inicio
+       5   00:EA63  F0 EB                   dw   FINAL - 1         ; dirección final
+       6   00:EA65  60 EA                   dw   INICIO             ; dircción del programa de ejecución (para cuando pongas r en bload"nombre_programa", r)
+       7   00:EA67                      
+       8   00:EA67                          org 60000  ; o #f230, org se utiliza para decirle al z80 en que posición de memoria RAM empieza nuestro programa en ensamblador
+       9   00:EA60                      
+      10   00:EA60  (00:005F)           CHGMOD equ #005F   ; Cambia el modo de screen pero previamente necesita que se le asigne el modo en el registro a
+      11   00:EA60  (00:005C)           LDIRVM equ #005C   ;Tansfiere bloques de la RAM a la VRAM, es la más importante, necesita previamente asignar valor al registro bc con la longitud, dc con la dirección de inicio de la VRAM y hl con la dirección de inicio de la RAM:
+      12   00:EA60  (00:00D5)           GTSTCK equ #00D5   ;si le pasas al registro a un 0 detectará los cursores,un 1 para el joystick 1 y 2 para el joystick 2
+      13   00:EA60                                         ;devuelve en a 1 arriba, 2 diagonal arriba derecha,3 derecha, asi hasta 7
+      14   00:EA60                      
+      15   00:EA60                      INICIO:
+      16   00:EA60  CD 64 EA                call volcar_sprites_de_disco_a_vram
+      17   00:EA63  C9                      ret
+      18   00:EA64                      
+      19   00:EA64                      
+      20   00:EA64                      
+      21   00:EA64                      volcar_sprites_de_disco_a_vram:
+      22   00:EA64  21 71 EA                ld hl, sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
+      23   00:EA67  11 00 78                ld de, #7800 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
+      24   00:EA6A  01 00 08                ld bc, 2048; son 383 bytes a copiar
+      25   00:EA6D  CD 5C 00                call  LDIRVM ; Mira arriba, pone la explicación
+      26   00:EA70  C9                      ret
+      27   00:EA71                      ;volcar_colores_sprites_de_disco_a_vram:
+      28   00:EA71                          ;ld hl, color_sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
+      29   00:EA71                          ;ld de, #7400 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
+      30   00:EA71                          ;ld bc, 1024; son 1024 bytes a copiar
+      31   00:EA71                          ;call  LDIRVM ; Mira arriba, pone la explicación
+      32   00:EA71                          ;ret
+      33   00:EA71                       
+      34   00:EA71                      
+      35   00:EA71                      ;Esta es la pantalla con la foto
+      36   00:EA71                      sprites:
+      37   00:EA71  (0180)                  incbin "./src/SPR.BIN"
+      38   00:EBF1                      ;color_sprites:
+      39   00:EBF1                          ;incbin "./src/CLRSPR.BIN"
+      40   00:EBF1                      
+      41   00:EBF1                      
+      42   00:EBF1                      
+      43   00:EBF1                      
+      44   00:EBF1                      FINAL:
+
+    LABELS
+-------------------------------------------------
+00:0000005F X CHGMOD
+00:0000005C   LDIRVM
+00:000000D5 X GTSTCK
+00:0000EA60   INICIO
+00:0000EA64   volcar_sprites_de_disco_a_vram
+00:0000EA71   sprites
+00:0000EBF1   FINAL
+
+
+ Output: src/rutinas.out
+-------------------------------------------------
+
+ Page: 00
+  Org: 0000EA60  Size: *  Used: 00000000
+
+    No output
+
+ Output: rutinas.bin
+-------------------------------------------------
+
+ Page: 00
+  Org: 0000EA60  Size: *  Used: 00000198
+
+   Address   Length Align   Label
+   0000EA60     408         INICIO
