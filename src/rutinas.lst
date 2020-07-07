@@ -1,69 +1,435 @@
-Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2020.07.06 - 06:39:04]
+Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2020.07.07 - 05:21:03]
 
 src/rutinas.asm
 Errors: 0
 
        1   00:0000                              output "rutinas.bin"
-       2   00:EA60                      
-       3   00:EA60  FE                      db   #fe               ; ID archivo binario, siempre hay que poner el mismo 0FEh
-       4   00:EA61  60 EA                   dw   INICIO            ; dirección de inicio
-       5   00:EA63  F0 EB                   dw   FINAL - 1         ; dirección final
-       6   00:EA65  60 EA                   dw   INICIO             ; dircción del programa de ejecución (para cuando pongas r en bload"nombre_programa", r)
-       7   00:EA67                      
-       8   00:EA67                          org 60000  ; o #f230, org se utiliza para decirle al z80 en que posición de memoria RAM empieza nuestro programa en ensamblador
-       9   00:EA60                      
-      10   00:EA60  (00:005F)           CHGMOD equ #005F   ; Cambia el modo de screen pero previamente necesita que se le asigne el modo en el registro a
-      11   00:EA60  (00:005C)           LDIRVM equ #005C   ;Tansfiere bloques de la RAM a la VRAM, es la más importante, necesita previamente asignar valor al registro bc con la longitud, dc con la dirección de inicio de la VRAM y hl con la dirección de inicio de la RAM:
-      12   00:EA60  (00:00D5)           GTSTCK equ #00D5   ;si le pasas al registro a un 0 detectará los cursores,un 1 para el joystick 1 y 2 para el joystick 2
-      13   00:EA60                                         ;devuelve en a 1 arriba, 2 diagonal arriba derecha,3 derecha, asi hasta 7
-      14   00:EA60                      
-      15   00:EA60                      INICIO:
-      16   00:EA60  CD 64 EA                call volcar_sprites_de_disco_a_vram
-      17   00:EA63  C9                      ret
-      18   00:EA64                      
-      19   00:EA64                      
-      20   00:EA64                      
-      21   00:EA64                      volcar_sprites_de_disco_a_vram:
-      22   00:EA64  21 71 EA                ld hl, sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
-      23   00:EA67  11 00 78                ld de, #7800 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
-      24   00:EA6A  01 00 08                ld bc, 2048; son 383 bytes a copiar
-      25   00:EA6D  CD 5C 00                call  LDIRVM ; Mira arriba, pone la explicación
-      26   00:EA70  C9                      ret
-      27   00:EA71                      ;volcar_colores_sprites_de_disco_a_vram:
-      28   00:EA71                          ;ld hl, color_sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
-      29   00:EA71                          ;ld de, #7400 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
-      30   00:EA71                          ;ld bc, 1024; son 1024 bytes a copiar
-      31   00:EA71                          ;call  LDIRVM ; Mira arriba, pone la explicación
-      32   00:EA71                          ;ret
-      33   00:EA71                       
-      34   00:EA71                      
-      35   00:EA71                      ;Esta es la pantalla con la foto
-      36   00:EA71                      sprites:
-      37   00:EA71  (0180)                  incbin "./src/SPR.BIN"
-      38   00:EBF1                      ;color_sprites:
-      39   00:EBF1                          ;incbin "./src/CLRSPR.BIN"
-      40   00:EBF1                      
-      41   00:EBF1                      
-      42   00:EBF1                      
-      43   00:EBF1                      
-      44   00:EBF1                      FINAL:
+       2   00:C350                      
+       3   00:C350  FE                      db   #fe               ; ID archivo binario, siempre hay que poner el mismo 0FEh
+       4   00:C351  50 C3                   dw   INICIO            ; dirección de inicio
+       5   00:C353  10 C8                   dw   FINAL - 1         ; dirección final
+       6   00:C355  50 C3                   dw   INICIO             ; dircción del programa de ejecución (para cuando pongas r en bload"nombre_programa", r)
+       7   00:C357                      
+       8   00:C357                          org 50000  ; o #f230, org se utiliza para decirle al z80 en que posición de memoria RAM empieza nuestro programa en ensamblador
+       9   00:C350                      
+      10   00:C350  (00:005F)           CHGMOD equ #005F   ; Cambia el modo de screen pero previamente necesita que se le asigne el modo en el registro a
+      11   00:C350  (00:005C)           LDIRVM equ #005C   ;Tansfiere bloques de la RAM a la VRAM, es la más importante, necesita previamente asignar valor al registro bc con la longitud, dc con la dirección de inicio de la VRAM y hl con la dirección de inicio de la RAM:
+      12   00:C350  (00:00D5)           GTSTCK equ #00D5   ;si le pasas al registro a un 0 detectará los cursores,un 1 para el joystick 1 y 2 para el joystick 2
+      13   00:C350                                         ;devuelve en a 1 arriba, 2 diagonal arriba derecha,3 derecha, asi hasta 7
+      14   00:C350                      
+      15   00:C350                      INICIO:
+      16   00:C350  CD 57 C3                call volcar_sprites_de_disco_a_vram
+      17   00:C353  CD 64 C3                call volcar_colores_sprites_de_disco_a_vram
+      18   00:C356  C9                      ret
+      19   00:C357                      
+      20   00:C357                      
+      21   00:C357                      
+      22   00:C357                      volcar_sprites_de_disco_a_vram:
+      23   00:C357  21 71 C3                ld hl, sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
+      24   00:C35A  11 00 78                ld de, #7800 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
+      25   00:C35D  01 20 03                ld bc, 32*25; son 383 bytes a copiar
+      26   00:C360  CD 5C 00                call  LDIRVM ; Mira arriba, pone la explicación
+      27   00:C363  C9                      ret
+      28   00:C364                      volcar_colores_sprites_de_disco_a_vram:
+      29   00:C364  21 91 C6                ld hl, color_sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
+      30   00:C367  11 00 74                ld de, #7400 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
+      31   00:C36A  01 80 01                ld bc, 16*24; son 1024 bytes a copiar
+      32   00:C36D  CD 5C 00                call  LDIRVM ; Mira arriba, pone la explicación
+      33   00:C370  C9                      ret
+      34   00:C371                       
+      35   00:C371                      
+      36   00:C371                      
+      37   00:C371                      sprites:
+      38   00:C371                          ;incbin "./src/SPR.BIN"
+      39   00:C371                          ; 0-Personaje 0
+      40   00:C371                          db #03,#07,#04,#04,#07,#07,#03,#FC
+      40   00:C371  03 07 04 04 07 07 03 FC 
+      41   00:C379                          db #9B,#9C,#97,#F6,#04,#04,#07,#05
+      41   00:C379  9B 9C 97 F6 04 04 07 05 
+      42   00:C381                          db #C0,#C0,#80,#80,#C0,#C0,#00,#80
+      42   00:C381  C0 C0 80 80 C0 C0 00 80 
+      43   00:C389                          db #C0,#70,#F0,#80,#00,#80,#60,#20
+      43   00:C389  C0 70 F0 80 00 80 60 20 
+      44   00:C391                          ; 1-Personaje 1
+      45   00:C391                          db #03,#07,#04,#04,#07,#07,#03,#FC
+      45   00:C391  03 07 04 04 07 07 03 FC 
+      46   00:C399                          db #9B,#9C,#97,#F6,#00,#09,#18,#12
+      46   00:C399  9B 9C 97 F6 00 09 18 12 
+      47   00:C3A1                          db #C0,#C0,#80,#80,#C0,#C0,#00,#80
+      47   00:C3A1  C0 C0 80 80 C0 C0 00 80 
+      48   00:C3A9                          db #C0,#70,#F0,#80,#40,#20,#98,#48
+      48   00:C3A9  C0 70 F0 80 40 20 98 48 
+      49   00:C3B1                          ; 2-Personaje 2
+      50   00:C3B1                          db #03,#03,#01,#01,#03,#03,#00,#01
+      50   00:C3B1  03 03 01 01 03 03 00 01 
+      51   00:C3B9                          db #03,#0E,#0F,#01,#00,#01,#06,#04
+      51   00:C3B9  03 0E 0F 01 00 01 06 04 
+      52   00:C3C1                          db #C0,#E0,#20,#20,#E0,#E0,#C0,#3F
+      52   00:C3C1  C0 E0 20 20 E0 E0 C0 3F 
+      53   00:C3C9                          db #D9,#39,#E9,#6F,#20,#20,#E0,#A0
+      53   00:C3C9  D9 39 E9 6F 20 20 E0 A0 
+      54   00:C3D1                          ; 3-Personaje 3
+      55   00:C3D1                          db #03,#03,#01,#01,#03,#03,#00,#01
+      55   00:C3D1  03 03 01 01 03 03 00 01 
+      56   00:C3D9                          db #03,#0E,#0F,#01,#02,#04,#19,#12
+      56   00:C3D9  03 0E 0F 01 02 04 19 12 
+      57   00:C3E1                          db #C0,#E0,#20,#20,#E0,#E0,#C0,#3F
+      57   00:C3E1  C0 E0 20 20 E0 E0 C0 3F 
+      58   00:C3E9                          db #D9,#39,#E9,#6F,#00,#90,#18,#48
+      58   00:C3E9  D9 39 E9 6F 00 90 18 48 
+      59   00:C3F1                          ; 4-Personaje 4
+      60   00:C3F1                          db #01,#03,#02,#02,#03,#03,#00,#02
+      60   00:C3F1  01 03 02 02 03 03 00 02 
+      61   00:C3F9                          db #06,#06,#07,#01,#01,#01,#04,#04
+      61   00:C3F9  06 06 07 01 01 01 04 04 
+      62   00:C401                          db #C0,#E0,#20,#20,#E0,#E0,#C0,#10
+      62   00:C401  C0 E0 20 20 E0 E0 C0 10 
+      63   00:C409                          db #18,#18,#F8,#E8,#20,#20,#C8,#C8
+      63   00:C409  18 18 F8 E8 20 20 C8 C8 
+      64   00:C411                          ; 5-Personaje 5
+      65   00:C411                          db #00,#01,#01,#01,#01,#01,#00,#02
+      65   00:C411  00 01 01 01 01 01 00 02 
+      66   00:C419                          db #06,#06,#07,#05,#03,#07,#07,#00
+      66   00:C419  06 06 07 05 03 07 07 00 
+      67   00:C421                          db #E0,#F0,#10,#10,#F0,#F0,#60,#10
+      67   00:C421  E0 F0 10 10 F0 F0 60 10 
+      68   00:C429                          db #18,#18,#F8,#E0,#20,#A0,#70,#70
+      68   00:C429  18 18 F8 E0 20 A0 70 70 
+      69   00:C431                          ; 6-Personaje 6
+      70   00:C431                          db #01,#03,#03,#03,#03,#03,#00,#02
+      70   00:C431  01 03 03 03 03 03 00 02 
+      71   00:C439                          db #06,#06,#07,#01,#01,#01,#01,#03
+      71   00:C439  06 06 07 01 01 01 01 03 
+      72   00:C441                          db #C0,#E0,#E0,#E0,#E0,#E0,#C0,#10
+      72   00:C441  C0 E0 E0 E0 E0 E0 C0 10 
+      73   00:C449                          db #18,#18,#F8,#E8,#20,#20,#E0,#F0
+      73   00:C449  18 18 F8 E8 20 20 E0 F0 
+      74   00:C451                          ; 7-Personaje 7
+      75   00:C451                          db #00,#01,#01,#01,#01,#01,#00,#02
+      75   00:C451  00 01 01 01 01 01 00 02 
+      76   00:C459                          db #06,#06,#07,#05,#01,#03,#07,#00
+      76   00:C459  06 06 07 05 01 03 07 00 
+      77   00:C461                          db #E0,#F0,#F0,#F0,#F0,#F0,#60,#10
+      77   00:C461  E0 F0 F0 F0 F0 F0 60 10 
+      78   00:C469                          db #18,#18,#F8,#E0,#20,#20,#60,#60
+      78   00:C469  18 18 F8 E0 20 20 60 60 
+      79   00:C471                      
+      80   00:C471                      
+      81   00:C471                          ; 8-Pajara 0
+      82   00:C471                          db #00,#00,#00,#00,#C0,#30,#1C,#FC
+      82   00:C471  00 00 00 00 C0 30 1C FC 
+      83   00:C479                          db #FF,#1F,#2F,#5F,#7E,#FC,#F8,#E0
+      83   00:C479  FF 1F 2F 5F 7E FC F8 E0 
+      84   00:C481                          db #00,#00,#00,#00,#00,#70,#F8,#80
+      84   00:C481  00 00 00 00 00 70 F8 80 
+      85   00:C489                          db #80,#00,#00,#00,#00,#00,#00,#00
+      85   00:C489  80 00 00 00 00 00 00 00 
+      86   00:C491                          ; 9-Pajaro 1-plano 2 de pajaro 0
+      87   00:C491                          db #00,#00,#00,#00,#00,#00,#00,#00
+      87   00:C491  00 00 00 00 00 00 00 00 
+      88   00:C499                          db #FF,#1F,#FF,#FF,#00,#00,#00,#00
+      88   00:C499  FF 1F FF FF 00 00 00 00 
+      89   00:C4A1                          db #00,#00,#00,#00,#00,#70,#F8,#80
+      89   00:C4A1  00 00 00 00 00 70 F8 80 
+      90   00:C4A9                          db #80,#00,#00,#00,#00,#00,#00,#00
+      90   00:C4A9  80 00 00 00 00 00 00 00 
+      91   00:C4B1                      
+      92   00:C4B1                          ; 10-Pajara 2
+      93   00:C4B1                          db #00,#00,#01,#01,#41,#73,#7B,#3F
+      93   00:C4B1  00 00 01 01 41 73 7B 3F 
+      94   00:C4B9                          db #3F,#7F,#FF,#7F,#F8,#00,#00,#00
+      94   00:C4B9  3F 7F FF 7F F8 00 00 00 
+      95   00:C4C1                          db #00,#00,#80,#80,#C0,#C0,#C0,#C0
+      95   00:C4C1  00 00 80 80 C0 C0 C0 C0 
+      96   00:C4C9                          db #F8,#BC,#8C,#00,#00,#00,#00,#00
+      96   00:C4C9  F8 BC 8C 00 00 00 00 00 
+      97   00:C4D1                          ; 11-plano 2 de pajaro 2
+      98   00:C4D1                          db #00,#00,#00,#00,#00,#00,#00,#00
+      98   00:C4D1  00 00 00 00 00 00 00 00 
+      99   00:C4D9                          db #00,#7F,#FF,#0F,#1F,#00,#00,#00
+      99   00:C4D9  00 7F FF 0F 1F 00 00 00 
+     100   00:C4E1                          db #00,#00,#00,#00,#00,#00,#00,#00
+     100   00:C4E1  00 00 00 00 00 00 00 00 
+     101   00:C4E9                          db #00,#BC,#EC,#B8,#98,#00,#00,#00
+     101   00:C4E9  00 BC EC B8 98 00 00 00 
+     102   00:C4F1                      
+     103   00:C4F1                          ; 12-Pajara 3
+     104   00:C4F1                          db #04,#04,#06,#03,#03,#01,#E1,#3F
+     104   00:C4F1  04 04 06 03 03 01 E1 3F 
+     105   00:C4F9                          db #3F,#E1,#01,#03,#03,#06,#04,#04
+     105   00:C4F9  3F E1 01 03 03 06 04 04 
+     106   00:C501                          db #00,#00,#00,#00,#80,#80,#C0,#F0
+     106   00:C501  00 00 00 00 80 80 C0 F0 
+     107   00:C509                          db #F0,#C0,#80,#80,#00,#00,#00,#00
+     107   00:C509  F0 C0 80 80 00 00 00 00 
+     108   00:C511                          ; 13-Plano 2 de pákaro 3
+     109   00:C511                          db #00,#00,#00,#00,#0F,#7F,#E1,#3F
+     109   00:C511  00 00 00 00 0F 7F E1 3F 
+     110   00:C519                          db #3F,#E1,#7F,#0F,#00,#00,#00,#00
+     110   00:C519  3F E1 7F 0F 00 00 00 00 
+     111   00:C521                          db #00,#00,#00,#00,#00,#80,#C0,#F0
+     111   00:C521  00 00 00 00 00 80 C0 F0 
+     112   00:C529                          db #F0,#C0,#80,#00,#00,#00,#00,#00
+     112   00:C529  F0 C0 80 00 00 00 00 00 
+     113   00:C531                      
+     114   00:C531                          ; 14- pájaro 4
+     115   00:C531                          db #00,#00,#00,#00,#00,#1C,#1C,#1C
+     115   00:C531  00 00 00 00 00 1C 1C 1C 
+     116   00:C539                          db #07,#0F,#0C,#18,#01,#01,#00,#00
+     116   00:C539  07 0F 0C 18 01 01 00 00 
+     117   00:C541                          db #00,#00,#00,#00,#0C,#1C,#10,#10
+     117   00:C541  00 00 00 00 0C 1C 10 10 
+     118   00:C549                          db #F0,#E0,#E0,#C0,#80,#80,#00,#00
+     118   00:C549  F0 E0 E0 C0 80 80 00 00 
+     119   00:C551                          ; 15- plano 2 de pájaro 4
+     120   00:C551                          db #00,#00,#00,#00,#01,#1D,#1C,#1F
+     120   00:C551  00 00 00 00 01 1D 1C 1F 
+     121   00:C559                          db #07,#0F,#0C,#18,#00,#00,#00,#00
+     121   00:C559  07 0F 0C 18 00 00 00 00 
+     122   00:C561                          db #00,#00,#00,#00,#CC,#DC,#F0,#F0
+     122   00:C561  00 00 00 00 CC DC F0 F0 
+     123   00:C569                          db #F0,#E0,#00,#00,#00,#00,#00,#00
+     123   00:C569  F0 E0 00 00 00 00 00 00 
+     124   00:C571                      
+     125   00:C571                          ; 16- pajaro 5
+     126   00:C571                          db #00,#00,#00,#00,#07,#23,#33,#1F
+     126   00:C571  00 00 00 00 07 23 33 1F 
+     127   00:C579                          db #1F,#33,#23,#07,#00,#00,#00,#00
+     127   00:C579  1F 33 23 07 00 00 00 00 
+     128   00:C581                          db #00,#00,#00,#00,#00,#80,#80,#E0
+     128   00:C581  00 00 00 00 00 80 80 E0 
+     129   00:C589                          db #E0,#C0,#80,#00,#00,#00,#00,#00
+     129   00:C589  E0 C0 80 00 00 00 00 00 
+     130   00:C591                          ; 17-Plano 2 de pájaro 5
+     131   00:C591                          db #00,#00,#00,#00,#00,#20,#37,#1F
+     131   00:C591  00 00 00 00 00 20 37 1F 
+     132   00:C599                          db #1F,#37,#20,#00,#00,#00,#00,#00
+     132   00:C599  1F 37 20 00 00 00 00 00 
+     133   00:C5A1                          db #00,#00,#00,#00,#00,#00,#C0,#E0
+     133   00:C5A1  00 00 00 00 00 00 C0 E0 
+     134   00:C5A9                          db #E0,#C0,#00,#00,#00,#00,#00,#00
+     134   00:C5A9  E0 C0 00 00 00 00 00 00 
+     135   00:C5B1                      
+     136   00:C5B1                          ; 18- pajaro 6
+     137   00:C5B1                          db #02,#03,#01,#00,#00,#00,#00,#7F
+     137   00:C5B1  02 03 01 00 00 00 00 7F 
+     138   00:C5B9                          db #1F,#00,#00,#00,#00,#01,#03,#02
+     138   00:C5B9  1F 00 00 00 00 01 03 02 
+     139   00:C5C1                          db #00,#80,#C0,#C0,#C0,#E0,#E0,#F8
+     139   00:C5C1  00 80 C0 C0 C0 E0 E0 F8 
+     140   00:C5C9                          db #F0,#E0,#E0,#C0,#C0,#C0,#00,#00
+     140   00:C5C9  F0 E0 E0 C0 C0 C0 00 00 
+     141   00:C5D1                          ; 19- plano 2 de pajaro 6
+     142   00:C5D1                          db #00,#00,#00,#00,#00,#03,#0F,#7F
+     142   00:C5D1  00 00 00 00 00 03 0F 7F 
+     143   00:C5D9                          db #1F,#0F,#03,#00,#00,#00,#00,#00
+     143   00:C5D9  1F 0F 03 00 00 00 00 00 
+     144   00:C5E1                          db #00,#00,#00,#00,#00,#C0,#E0,#F8
+     144   00:C5E1  00 00 00 00 00 C0 E0 F8 
+     145   00:C5E9                          db #F0,#E0,#C0,#00,#00,#00,#00,#00
+     145   00:C5E9  F0 E0 C0 00 00 00 00 00 
+     146   00:C5F1                      
+     147   00:C5F1                          ; 20- pájaro 7
+     148   00:C5F1                          db #00,#00,#00,#01,#01,#79,#7D,#07
+     148   00:C5F1  00 00 00 01 01 79 7D 07 
+     149   00:C5F9                          db #7D,#7D,#00,#00,#00,#00,#00,#00
+     149   00:C5F9  7D 7D 00 00 00 00 00 00 
+     150   00:C601                          db #00,#38,#FC,#F8,#F0,#C0,#87,#FE
+     150   00:C601  00 38 FC F8 F0 C0 87 FE 
+     151   00:C609                          db #FE,#C7,#F8,#7C,#3C,#00,#00,#00
+     151   00:C609  FE C7 F8 7C 3C 00 00 00 
+     152   00:C611                          ; 21- plano 2 de pajaro 7
+     153   00:C611                          db #00,#00,#00,#00,#00,#79,#7D,#07
+     153   00:C611  00 00 00 00 00 79 7D 07 
+     154   00:C619                          db #7D,#7D,#00,#00,#00,#00,#00,#00
+     154   00:C619  7D 7D 00 00 00 00 00 00 
+     155   00:C621                          db #00,#00,#00,#00,#00,#C0,#87,#FE
+     155   00:C621  00 00 00 00 00 C0 87 FE 
+     156   00:C629                          db #FE,#F7,#F8,#3C,#00,#00,#00,#00
+     156   00:C629  FE F7 F8 3C 00 00 00 00 
+     157   00:C631                      
+     158   00:C631                          ; 22- pájaro 8
+     159   00:C631                          db #00,#00,#00,#00,#00,#01,#03,#3B
+     159   00:C631  00 00 00 00 00 01 03 3B 
+     160   00:C639                          db #3F,#03,#03,#01,#01,#00,#00,#00
+     160   00:C639  3F 03 03 01 01 00 00 00 
+     161   00:C641                          db #00,#1F,#7F,#FF,#FC,#F0,#C7,#FF
+     161   00:C641  00 1F 7F FF FC F0 C7 FF 
+     162   00:C649                          db #FC,#CF,#C0,#C0,#E0,#F8,#7C,#3E
+     162   00:C649  FC CF C0 C0 E0 F8 7C 3E 
+     163   00:C651                          ; 23- plano 2 de pájaro 8
+     164   00:C651                          db #00,#00,#00,#00,#00,#00,#03,#3B
+     164   00:C651  00 00 00 00 00 00 03 3B 
+     165   00:C659                          db #3F,#03,#03,#01,#01,#00,#00,#00
+     165   00:C659  3F 03 03 01 01 00 00 00 
+     166   00:C661                          db #00,#00,#00,#00,#00,#00,#C7,#FF
+     166   00:C661  00 00 00 00 00 00 C7 FF 
+     167   00:C669                          db #FC,#CF,#F0,#DE,#E7,#FA,#7C,#3E
+     167   00:C669  FC CF F0 DE E7 FA 7C 3E 
+     168   00:C671                      
+     169   00:C671                      
+     170   00:C671                      
+     171   00:C671                          ; 24 -cagada pájaro
+     172   00:C671                          db #00,#00,#00,#00,#00,#00,#00,#00
+     172   00:C671  00 00 00 00 00 00 00 00 
+     173   00:C679                          db #01,#01,#01,#01,#03,#07,#07,#1F
+     173   00:C679  01 01 01 01 03 07 07 1F 
+     174   00:C681                          db #00,#00,#00,#00,#00,#00,#00,#00
+     174   00:C681  00 00 00 00 00 00 00 00 
+     175   00:C689                          db #00,#00,#00,#00,#80,#C0,#C0,#F8
+     175   00:C689  00 00 00 00 80 C0 C0 F8 
+     176   00:C691                      
+     177   00:C691                      
+     178   00:C691                      
+     179   00:C691                      
+     180   00:C691                      color_sprites:
+     181   00:C691                          ;incbin "./src/CLRSPR.BIN"
+     182   00:C691                          ; 0-Personaje 0
+     183   00:C691                          db #0F,#0F,#07,#07,#0F,#0F,#0F,#08
+     183   00:C691  0F 0F 07 07 0F 0F 0F 08 
+     184   00:C699                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     184   00:C699  08 08 08 08 08 08 0F 0F 
+     185   00:C6A1                          ; 1-Personaje 1
+     186   00:C6A1                          db #0F,#0F,#47,#47,#0F,#0F,#0F,#48
+     186   00:C6A1  0F 0F 47 47 0F 0F 0F 48 
+     187   00:C6A9                          db #48,#48,#48,#48,#48,#48,#0F,#0F
+     187   00:C6A9  48 48 48 48 48 48 0F 0F 
+     188   00:C6B1                          ; 2-Personaje 2
+     189   00:C6B1                          db #0F,#0F,#0F,#0F,#0F,#0F,#08,#08
+     189   00:C6B1  0F 0F 0F 0F 0F 0F 08 08 
+     190   00:C6B9                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     190   00:C6B9  08 08 08 08 08 08 0F 0F 
+     191   00:C6C1                          ; 3-Personaje 3
+     192   00:C6C1                          db #0F,#0F,#07,#07,#0F,#0F,#08,#08
+     192   00:C6C1  0F 0F 07 07 0F 0F 08 08 
+     193   00:C6C9                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     193   00:C6C9  08 08 08 08 08 08 0F 0F 
+     194   00:C6D1                          ; 4-Personaje 4
+     195   00:C6D1                          db #0F,#07,#07,#07,#0F,#0F,#0F,#08
+     195   00:C6D1  0F 07 07 07 0F 0F 0F 08 
+     196   00:C6D9                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     196   00:C6D9  08 08 08 08 08 08 0F 0F 
+     197   00:C6E1                          ; 5-Personaje 5
+     198   00:C6E1                          db #0F,#07,#07,#07,#07,#0F,#0F,#08
+     198   00:C6E1  0F 07 07 07 07 0F 0F 08 
+     199   00:C6E9                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     199   00:C6E9  08 08 08 08 08 08 0F 0F 
+     200   00:C6F1                          ; 6-Personaje 6
+     201   00:C6F1                          db #0F,#0F,#0F,#0F,#0F,#0F,#08,#08
+     201   00:C6F1  0F 0F 0F 0F 0F 0F 08 08 
+     202   00:C6F9                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     202   00:C6F9  08 08 08 08 08 08 0F 0F 
+     203   00:C701                          ; 7-Personaje 7
+     204   00:C701                          db #0F,#0F,#0F,#0F,#0F,#0F,#08,#08
+     204   00:C701  0F 0F 0F 0F 0F 0F 08 08 
+     205   00:C709                          db #08,#08,#08,#08,#08,#08,#0F,#0F
+     205   00:C709  08 08 08 08 08 08 0F 0F 
+     206   00:C711                      
+     207   00:C711                          ; 8-pájaro 1
+     208   00:C711                          db #0F,#0F,#0F,#0F,#02,#02,#02,#07
+     208   00:C711  0F 0F 0F 0F 02 02 02 07 
+     209   00:C719                          db #07,#07,#02,#02,#02,#02,#02,#02
+     209   00:C719  07 07 02 02 02 02 02 02 
+     210   00:C721                          ; 9-plano 2 pájaro 1
+     211   00:C721                          db #0F,#0F,#0F,#0F,#02,#02,#02,#07
+     211   00:C721  0F 0F 0F 0F 02 02 02 07 
+     212   00:C729                          db #07,#07,#02,#02,#02,#02,#02,#02
+     212   00:C729  07 07 02 02 02 02 02 02 
+     213   00:C731                          ; 10-pájaro 2
+     214   00:C731                          db #0F,#09,#09,#09,#09,#09,#09,#09
+     214   00:C731  0F 09 09 09 09 09 09 09 
+     215   00:C739                          db #09,#0A,#0A,#09,#09,#0F,#0F,#0F
+     215   00:C739  09 0A 0A 09 09 0F 0F 0F 
+     216   00:C741                          ; 11-plano 2
+     217   00:C741                          db #0F,#09,#09,#09,#09,#09,#09,#09
+     217   00:C741  0F 09 09 09 09 09 09 09 
+     218   00:C749                          db #09,#0A,#0A,#09,#09,#0F,#0F,#0F
+     218   00:C749  09 0A 0A 09 09 0F 0F 0F 
+     219   00:C751                          ; 12-pájaro 3
+     220   00:C751                          db #0E,#0E,#0E,#0E,#0E,#0E,#07,#07
+     220   00:C751  0E 0E 0E 0E 0E 0E 07 07 
+     221   00:C759                          db #07,#07,#0E,#0E,#0E,#0E,#0E,#0E
+     221   00:C759  07 07 0E 0E 0E 0E 0E 0E 
+     222   00:C761                          ; 13-plano 2
+     223   00:C761                          db #0E,#0E,#0E,#0E,#0E,#0E,#07,#07
+     223   00:C761  0E 0E 0E 0E 0E 0E 07 07 
+     224   00:C769                          db #07,#07,#0E,#0E,#0E,#0E,#0E,#0E
+     224   00:C769  07 07 0E 0E 0E 0E 0E 0E 
+     225   00:C771                          ; 14-pájaro 4
+     226   00:C771                          db #0F,#0F,#0F,#0F,#08,#08,#08,#08
+     226   00:C771  0F 0F 0F 0F 08 08 08 08 
+     227   00:C779                          db #09,#09,#08,#08,#08,#08,#0F,#0F
+     227   00:C779  09 09 08 08 08 08 0F 0F 
+     228   00:C781                          ; 15-plano 2
+     229   00:C781                          db #0F,#0F,#0F,#0F,#08,#08,#08,#08
+     229   00:C781  0F 0F 0F 0F 08 08 08 08 
+     230   00:C789                          db #09,#09,#08,#08,#08,#08,#0F,#0F
+     230   00:C789  09 09 08 08 08 08 0F 0F 
+     231   00:C791                          ; 16-pájaro 5
+     232   00:C791                          db #0F,#0F,#0F,#0F,#03,#02,#02,#04
+     232   00:C791  0F 0F 0F 0F 03 02 02 04 
+     233   00:C799                          db #04,#02,#02,#02,#0F,#0F,#0F,#0F
+     233   00:C799  04 02 02 02 0F 0F 0F 0F 
+     234   00:C7A1                          ; 17-plano 2
+     235   00:C7A1                          db #0F,#0F,#0F,#0F,#03,#02,#02,#04
+     235   00:C7A1  0F 0F 0F 0F 03 02 02 04 
+     236   00:C7A9                          db #04,#02,#02,#02,#0F,#0F,#0F,#0F
+     236   00:C7A9  04 02 02 02 0F 0F 0F 0F 
+     237   00:C7B1                          ; 18-pájaro 6
+     238   00:C7B1                          db #0E,#0E,#0E,#0E,#0E,#0E,#0E,#0D
+     238   00:C7B1  0E 0E 0E 0E 0E 0E 0E 0D 
+     239   00:C7B9                          db #0D,#0E,#0E,#0E,#0E,#0E,#0E,#0E
+     239   00:C7B9  0D 0E 0E 0E 0E 0E 0E 0E 
+     240   00:C7C1                          ; 19-plano 2
+     241   00:C7C1                          db #0E,#0E,#0E,#0E,#0E,#0E,#0E,#0D
+     241   00:C7C1  0E 0E 0E 0E 0E 0E 0E 0D 
+     242   00:C7C9                          db #0D,#0E,#0E,#0E,#0E,#0E,#0E,#0E
+     242   00:C7C9  0D 0E 0E 0E 0E 0E 0E 0E 
+     243   00:C7D1                          ; 20-pájaro 7
+     244   00:C7D1                          db #0F,#0A,#0A,#0A,#0A,#0C,#0C,#0C
+     244   00:C7D1  0F 0A 0A 0A 0A 0C 0C 0C 
+     245   00:C7D9                          db #0C,#0C,#0B,#0B,#0A,#0F,#0F,#0F
+     245   00:C7D9  0C 0C 0B 0B 0A 0F 0F 0F 
+     246   00:C7E1                          ; 21-plano 2
+     247   00:C7E1                          db #0F,#0A,#0A,#0A,#0A,#0C,#0C,#0C
+     247   00:C7E1  0F 0A 0A 0A 0A 0C 0C 0C 
+     248   00:C7E9                          db #0C,#0C,#0B,#0B,#0A,#0F,#0F,#0F
+     248   00:C7E9  0C 0C 0B 0B 0A 0F 0F 0F 
+     249   00:C7F1                          ; 22-pájaro 8
+     250   00:C7F1                          db #0F,#0A,#0A,#0A,#0A,#0A,#09,#09
+     250   00:C7F1  0F 0A 0A 0A 0A 0A 09 09 
+     251   00:C7F9                          db #09,#09,#0A,#0A,#0A,#0A,#0A,#0A
+     251   00:C7F9  09 09 0A 0A 0A 0A 0A 0A 
+     252   00:C801                          ; 23-plano 2
+     253   00:C801                          db #0F,#0A,#0A,#0A,#0A,#0A,#09,#09
+     253   00:C801  0F 0A 0A 0A 0A 0A 09 09 
+     254   00:C809                          db #09,#09,#0A,#0A,#0A,#0A,#0A,#0A
+     254   00:C809  09 09 0A 0A 0A 0A 0A 0A 
+     255   00:C811                      
+     256   00:C811                      
+     257   00:C811                      
+     258   00:C811                      
+     259   00:C811                      
+     260   00:C811                      FINAL:
 
     LABELS
 -------------------------------------------------
 00:0000005F X CHGMOD
 00:0000005C   LDIRVM
 00:000000D5 X GTSTCK
-00:0000EA60   INICIO
-00:0000EA64   volcar_sprites_de_disco_a_vram
-00:0000EA71   sprites
-00:0000EBF1   FINAL
+00:0000C350   INICIO
+00:0000C357   volcar_sprites_de_disco_a_vram
+00:0000C364   volcar_colores_sprites_de_disco_a_vram
+00:0000C371   sprites
+00:0000C691   color_sprites
+00:0000C811   FINAL
 
 
  Output: src/rutinas.out
 -------------------------------------------------
 
  Page: 00
-  Org: 0000EA60  Size: *  Used: 00000000
+  Org: 0000C350  Size: *  Used: 00000000
 
     No output
 
@@ -71,7 +437,7 @@ Errors: 0
 -------------------------------------------------
 
  Page: 00
-  Org: 0000EA60  Size: *  Used: 00000198
+  Org: 0000C350  Size: *  Used: 000004C8
 
    Address   Length Align   Label
-   0000EA60     408         INICIO
+   0000C350    1224         INICIO

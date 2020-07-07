@@ -37,10 +37,14 @@ start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk assets/FONDO.SC
 rem imagen de la page1 de la primera pantalla
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk assets/PAGE1.SC5
 
+
 rem sprites
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/SPR.BIN
+rem color sprites
+start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/CLRSPR.BIN
 rem rutinas para cargar sprites
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/rutinas.bin
+
 
 
 rem /***********Abriendo el emulador***********/
