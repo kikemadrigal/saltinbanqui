@@ -4,17 +4,18 @@ rem @echo off
 rem sjasm (http://www.xl2s.tk/) es un compilador de ensamblador z80 que puedo convertir tu código ensamblador en los archivos binarios.rom y .bin
 rem necesitamos el .bin de la pantalla de carga y del reproductor de música
 start /wait tools/sjasm/sjasm.exe src/scloader.asm
-start /wait tools/sjasm/sjasm.exe src/music.asm
 start /wait tools/sjasm/sjasm.exe src/rutinas.asm
+rem start /wait tools/sjasm/sjasm.exe src/music.asm
 move /Y scloader.bin ./src
-move /Y music.bin ./src
 move /Y rutinas.bin ./src
+rem move /Y music.bin ./src
 rem del /F src/scloader.lst
 rem del /F src/music.lst
 
 
 rem /*******borrando comentarios*******/
-start /wait tools/deletecomments/deletecomments.exe src/main-dev.bas
+rem para ejcutar este comando necesitas tener java jre instalado
+java -jar tools/deletecomments/deletecomments.exe src/main-dev.bas
 
 
 
@@ -27,23 +28,17 @@ rem main.bas contiene mi código fuente
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/main.bas
 rem le metemos el archivo binario con la pantalla de carga
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/scloader.bin
-rem le metemos el archivo binario con la música
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/music.bin
-rem grabador de sprites
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/grabador.bas
-
-rem imagen de la pantalla de presentación
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk assets/FONDO.SC5
-rem imagen de la page1 de la primera pantalla
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk assets/PAGE1.SC5
-
-
-rem sprites
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/SPR.BIN
-rem color sprites
-start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/CLRSPR.BIN
 rem rutinas para cargar sprites
 start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/rutinas.bin
+rem le metemos el archivo binario con la música
+rem start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/music.bin
+
+
+
+
+rem pantalla1 page 0
+start /wait tools/Disk-Manager/DISKMGR.exe -A -F -C bin/main.dsk src/SCR1P1.SC5
+
 
 
 

@@ -5,7 +5,7 @@
     dw   FINAL - 1         ; dirección final
     dw   INICIO             ; dircción del programa de ejecución (para cuando pongas r en bload"nombre_programa", r)
 
-    org 50000  ; o #f230, org se utiliza para decirle al z80 en que posición de memoria RAM empieza nuestro programa en ensamblador
+    org 50000 ; o #f230, org se utiliza para decirle al z80 en que posición de memoria RAM empieza nuestro programa en ensamblador
 
 CHGMOD equ #005F   ; Cambia el modo de screen pero previamente necesita que se le asigne el modo en el registro a
 LDIRVM equ #005C   ;Tansfiere bloques de la RAM a la VRAM, es la más importante, necesita previamente asignar valor al registro bc con la longitud, dc con la dirección de inicio de la VRAM y hl con la dirección de inicio de la RAM:
@@ -22,13 +22,13 @@ INICIO:
 volcar_sprites_de_disco_a_vram:
     ld hl, sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
     ld de, #7800 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
-    ld bc, 32*25; son 383 bytes a copiar
+    ld bc, 32*29; son 383 bytes a copiar
     call  LDIRVM ; Mira arriba, pone la explicación
     ret
 volcar_colores_sprites_de_disco_a_vram:
     ld hl, color_sprites ; la rutina LDIRVM necesita haber cargado previamente la dirección de inicio de la RAM, para saber porqué he puesto 0000 fíjate este dibujo https://sites.google.com/site/multivac7/files-images/TMS9918_VRAMmap_G2_300dpi.png ,así es como está formado el VDP en screen 2
     ld de, #7400 ; la rutina necesita haber cargado previamente con de la dirección de inicio de la VRAM          
-    ld bc, 16*24; son 1024 bytes a copiar
+    ld bc, 16*29; son 1024 bytes a copiar
     call  LDIRVM ; Mira arriba, pone la explicación
     ret
  
@@ -36,6 +36,11 @@ volcar_colores_sprites_de_disco_a_vram:
 
 sprites:
     ;incbin "./src/SPR.BIN"
+     ; 0-vacío
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
     ; 0-Personaje 0
     db #03,#07,#04,#04,#07,#07,#03,#FC
     db #9B,#9C,#97,#F6,#04,#04,#07,#05
@@ -168,17 +173,34 @@ sprites:
 
 
 
-    ; 24 -cagada pájaro
+    ; 24-
+    db #01,#01,#01,#01,#01,#01,#01,#01
+    db #01,#01,#01,#01,#03,#0F,#3F,#FF
     db #00,#00,#00,#00,#00,#00,#00,#00
-    db #01,#01,#01,#01,#03,#07,#07,#1F
+    db #00,#00,#00,#00,#80,#F0,#FC,#FF
+    ; 25-
+    db #C0,#C0,#00,#00,#00,#00,#00,#00
     db #00,#00,#00,#00,#00,#00,#00,#00
-    db #00,#00,#00,#00,#80,#C0,#C0,#F8
-
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    ; 26-
+    db #40,#40,#40,#40,#40,#40,#40,#E0
+    db #E0,#40,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    ; 27-
+    db #F8,#50,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
+    db #00,#00,#00,#00,#00,#00,#00,#00
 
 
 
 color_sprites:
     ;incbin "./src/CLRSPR.BIN"
+    ; 0-vacío
+    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
+    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
     ; 0-Personaje 0
     db #0F,#0F,#07,#07,#0F,#0F,#0F,#08
     db #08,#08,#08,#08,#08,#08,#0F,#0F
@@ -253,8 +275,18 @@ color_sprites:
     db #0F,#0A,#0A,#0A,#0A,#0A,#09,#09
     db #09,#09,#0A,#0A,#0A,#0A,#0A,#0A
 
-
-
+    ; 24-
+    db #0B,#0B,#0B,#0B,#0B,#0B,#0B,#0B
+    db #0B,#0B,#0B,#0B,#0B,#0B,#0A,#09
+    ; 25-
+    db #09,#09,#0F,#0F,#0F,#0F,#0F,#0F
+    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
+    ; 26-
+    db #09,#09,#09,#09,#09,#09,#09,#08
+    db #08,#08,#0F,#0F,#0F,#0F,#0F,#0F
+    ; 27-
+    db #09,#09,#0F,#0F,#0F,#0F,#0F,#0F
+    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
 
 
 FINAL:

@@ -5,7 +5,7 @@
     dw   FINAL - 1         ; dirección final
     dw   INICIO            ; dircción del programa de ejecución (para cuando pongas r en bload"nombre_programa", r)
 
-    org #9800   ; org se utiliza para decirle al z80 en que posición de memoria empieza nuestro programa (es la 33280 en decimal), en hezadecimal sería #8200
+    org #9000   ; org se utiliza para decirle al z80 en que posición de memoria empieza nuestro programa (es la 33280 en decimal), en hezadecimal sería #8200
 
 CHGMOD equ #005F   ; Cambia el modo de screen pero previamente necesita que se le asigne el modo en el registro a
 LDIRVM equ #005C   ;Tansfiere bloques de la RAM a la VRAM, es la más importante, necesita previamente asignar valor al registro bc con la longitud, dc con la dirección de inicio de la VRAM y hl con la dirección de inicio de la RAM:
@@ -57,27 +57,16 @@ inicializar_modo_pantalla:
 
 ;************************************Final de inicializar_modo_pantalla********************
 
-;Este include lleva la rutina de descompresion de los archivos a VRAM
-;Hay que meterle previamente en el reg. hl la dirección de la RAM y en DE la VRAM
-;depack_VRAM:
-;    include "src/PL_VRAM_Depack.asm"
-
-;include "src/bios.asm"
-
-;Este include lleva dentro la rutina depack para descomprimir archivos en ram
-;la rutina unpack necesita que le metas previamente en el reg. hl la dirección de lso datos que uieres descomprimir y en de la direccion de la RAM
-;include "src/unpack.asm"
-
 
 
 
 ;Esta es la pantalla con la foto
 tiles:
-    incbin "./src/scloader-tiles.bin.chr"
+    incbin "./src/scloadertiles.bin.chr"
 color:
-    incbin "./src/scloader-tiles.-color.bin.clr"
+    incbin "./src/scloadertiles.bin.clr"
 mapa: 
-    incbin "./src/scloader-map.bin"
+    incbin "./src/scloadermap.bin"
 
 
 
