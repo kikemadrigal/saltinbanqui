@@ -199,11 +199,11 @@ sprites:
 color_sprites:
     ;incbin "./src/CLRSPR.BIN"
     ; 0-vacío
-    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
-    db #0F,#0F,#0F,#0F,#0F,#0F,#0F,#0F
-    ; 0-Personaje 0
     db #0F,#0F,#07,#07,#0F,#0F,#0F,#08
     db #08,#08,#08,#08,#08,#08,#0F,#0F
+    ; 0-Personaje 0
+    db #0F,#0F,#07,#07,#0F,#0F,#0F,#08
+    db #08,#08,#08,#08,#08,#08,#0F,#0F 
     ; 1-Personaje 1
     db #0F,#0F,#47,#47,#0F,#0F,#0F,#48
     db #48,#48,#48,#48,#48,#48,#0F,#0F

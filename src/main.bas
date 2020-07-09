@@ -29,15 +29,6 @@
 
 
 
-40 'gosub 30000
-
-
-50 'a$=inkey$: if a$="" goto 50 
-
-
-
-
-
 
 80 screen 0:cls:key off
 
@@ -77,7 +68,13 @@
 
 300 gosub 7000
 
-310 gosub 2000
+310 'on sprite gosub 5200: sprite on
+
+320 on strig gosub 5200
+
+330 strig(0) on
+
+340 gosub 2000
 
 
 
@@ -137,7 +134,7 @@
 
 
 
-        2000 'gosub 3000
+        2000 gosub 3000
 
         2020 gosub 10500
 
@@ -155,7 +152,7 @@
 
 
 
-    3000 if pe=0 then gosub 31300
+    3000 'if pe=0 then gosub 31300
 3040 return
 
 
@@ -164,9 +161,8 @@
 
 
 
-    5000 for i=0 to dn
-        5010 if px < dx(i) + dw(i) and  px + pw > dx(i) and py < dy(i) + dh(i) and ph + py > dy(i) then beep
-    5030 next i
+
+    5000 if px < dx(0) + dw(0) and  px + pw > dx(0) and py < dy(0) + dh(0) and ph + py > dy(0) then gosub 5200
 
     5040 'for i=0 to 10
 
@@ -194,10 +190,13 @@
 
 
 
-    5200 beep
+    5200 'sprite off
 
-    5210 pe=0
-5220 return
+    5210 pe=pe-10
+    5220 beep
+
+    5250 gosub 7000
+5260 return
 
 
 
@@ -271,7 +270,7 @@
 
 
 
-    10010 let ps=1: let pp=1
+    10010 let ps=0: let pp=1
 
     10020 let pv=10: let pe=100: let pc=0'
 10040 return
@@ -280,7 +279,7 @@
 
 
 
-    10500 put sprite 1,(px,py),,pp
+    10500 put sprite ps,(px,py),,pp
 10990 return
 
 
@@ -292,27 +291,29 @@
 
     11050 px=px+pv
 
-    11060 ps=1
+    11060 pp=1
 
-    11065 'pp=pp+1
-    11070 'if pp>1 then ps=ps+1:pp=0 else ps=0
-    11071 if pp=ps then pp=ps+1 else pp=ps
+    11065  pc=pc+1
+    11070 if pc>0 then pp=pp+1 else pc=0
+
 
     11075 if px>=w-pw then px=w-pw
 11080 return
 
     11090 px=px-pv
-    11100 ps=3
-    11105 'pp=pp+1
-    11110 'if pp>1 then ps=ps+1:pp=0 else ps=2
-    11111 if pp=ps then pp=ps+1 else pp=ps
+    11100 pp=3
+    11105 pc=pc+1
+    11110  if pc>0 then pp=pp+1 else pc=0
+
     11115 if px<0 then px=0
 11120 return
 
-    11130 'nada'
+    11130 'nada' 
     11135 py=py-10
-    11140 ps=7
-    11150 if pp=ps then pp=ps+1 else pp=ps
+    11140 pp=7
+    11145 if pc=0 then pp=pp+1 else pc=0
+    11150 pc=pc+1
+
 
     11155 if py<=30 then py=30
     11156 if py>200 then py=200
@@ -385,7 +386,7 @@
 
         20060 ed(i)=7
         20070 if ed(i)>5 then ed(i)=3 else ed(i)=7
-        20080 ex(i)=-10*i: ew(i)=16: eh(i)=16: es(i)=(2*i)+9: ep(i)=(2*i)+9: ev(i)=rnd(1)*20: ec(i)=rnd(1)*9
+        20080 ex(i)=-20*i: ew(i)=16: eh(i)=16: es(i)=(2*i)+9: ep(i)=(2*i)+9: ev(i)=10: ec(i)=0
     20090 next i
 20100 return
 
@@ -406,10 +407,10 @@
 
         21060 ec(i)=ec(i)+1 
 
-        21070 if ec(i)=15 and i=0 then ec(i)=0: dx(0)=ex(i)-pv(i): dy(0)=ey(i): da(0)=1: ex(i)=ex(i)-ev(i): play "t230o3e"
-        21080 if ec(i)=17 and i=1 then ec(i)=0: dx(1)=ex(i)-pv(i): dy(1)=ey(i): da(1)=1: ex(i)=ex(i)-ev(i): play "t230o4c#"
-        21090 if ec(i)=23 and i=2 then ec(i)=0: dx(2)=ex(i)-pv(i): dy(2)=ey(i): da(2)=1: ex(i)=ex(i)-ev(i): play "t230o3bg#"
-        21100 if ec(i)=25 and i=2 then ec(i)=0: dx(3)=ex(i)-pv(i): dy(3)=ey(i): da(3)=1: ex(i)=ex(i)-ev(i): play "t230o4e"
+        21070 if ec(i)=10 and i=0 then ec(i)=0: dx(0)=ex(i)-pv(i): dy(0)=ey(i)+5: da(0)=1: ex(i)=ex(i)-ev(i): gosub 50000
+        21080 'if ec(i)=17 and i=1 then ec(i)=0: dx(1)=ex(i)-pv(i): dy(1)=ey(i): da(1)=1: ex(i)=ex(i)-ev(i): play "t230o4c#"
+        21090 'if ec(i)=23 and i=2 then ec(i)=0: dx(2)=ex(i)-pv(i): dy(2)=ey(i): da(2)=1: ex(i)=ex(i)-ev(i): play "t230o3bg#"
+        21100 'if ec(i)=25 and i=2 then ec(i)=0: dx(3)=ex(i)-pv(i): dy(3)=ey(i): da(3)=1: ex(i)=ex(i)-ev(i): play "t230o4e"
 
         21110 put sprite es(i),(ex(i),ey(i)),,ep(i)
 
@@ -463,7 +464,7 @@
     21510 dim dx(dn), dy(dn), dw(dn), dh(dn), da(dn), ds(dn)
 
     21520 for i=0 to dn
-        21530 dx(i)=100: dy(i)=16: dw(i)=16: dy(i)=-16: da(i)=0: ds(i)=0: dv(i)=10
+        21530 dx(i)=20*i: dy(i)=-16: dw(i)=16: dh(i)=16: da(i)=0: ds(i)=0: dv(i)=10
     21540 next i
 21550 return
 
@@ -594,6 +595,9 @@
     30320 'color 11,1,1
     30330 locate 0,10
     30340 print " Te han matado!!"
+    30350 erase ex,ey,ew,eh,es,ep,ev,ec,ed
+    30360 erase dx, dy, dw, dh, da, ds
+    30370 erase sx, sy,sw,sh
 30380 return
 
 
@@ -661,12 +665,12 @@
         32120 copy (2*16,0)-((2*16)+fw(0),0+fh(0)),1 to (i, h-fh(0)),0
     32130 next i
 
-    32140 for i=0 to h-fh(0) step fh(0)
-        32150 copy (3*16,0)-((3*16)+fw(0),0+fh(0)),1 to (0, i),0
-        32160 copy (1*16,0)-((1*16)+fw(0),0+fh(0)),1 to (w-fw(0), i),0
-    32170 next i
+    32140 'for i=0 to h-fh(0) step fh(0)
+        32150 'copy (3*16,0)-((3*16)+fw(0),0+fh(0)),1 to (0, i),0
+        32160 'copy (1*16,0)-((1*16)+fw(0),0+fh(0)),1 to (w-fw(0), i),0
+    32170 'next i
 
-    32180 copy (32,32)-(256,120),1 to (16,28),0
+    32180 'copy (32,32)-(256,120),1 to (16,28),0
 32190 return
 
 
@@ -704,3 +708,35 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+50000 SOUND 0,0:SOUND 7,198:SOUND 8,16:SOUND 12,2:SOUND 13,3
+50010 return
+
+50100 play "t230o3e"
+50110 return
