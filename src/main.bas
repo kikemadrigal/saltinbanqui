@@ -36,7 +36,7 @@
 100 locate 10,5
 110 print "Level 1"
 120 locate 0,10
-130 print "Un pajaro lanza una caca y el otro un regalo que tienes que coger, coge 10 regalos y pasas la pantalla"
+130 print "Un pajaro lanza una caca que te mata, al otro le tienes que coger 10 veces la caca roja"
 160 locate 0,21
 
 170 for i=0 to 2000: next i
