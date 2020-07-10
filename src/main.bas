@@ -88,28 +88,28 @@
 720 erase dx, dy, dw, dh, da, ds
 730 erase sx, sy,sw,sh
 
-740 COLOR 1,1,1:SCREEN 3
-750 OPEN "GRP:"AS#1
-760 FOR I=1 TO 10
-    770 M$="Ganaste!!"
+    740 COLOR 1,1,1:SCREEN 3
+    750 OPEN "GRP:"AS#1
+    760 FOR I=1 TO 10
+        770 M$="Ganaste!"
 
-    780 Y=24:X=0
-    790 FOR K=1 TO 2
-        800 FOR J=1 TO LEN(M$)
-            810 COLOR RND(1)*14+2
-            820 PRESET(X,Y)
-            830 PRINT#1,MID$(M$,J,1)
-            840 X=X+32
-        850 NEXT J
-    855 'M$="MSX Murcia 2020":Y=120:X=4
-860 NEXT K,I
-865 for i=0 to 500: next i
-870 screen 0: cls: color 15,1,1
+        780 Y=24:X=0
+        790 FOR K=1 TO 2
+            800 FOR J=1 TO LEN(M$)
+                810 COLOR RND(1)*14+2
+                812 PRESET(X,Y)
+                813 PRINT#1,MID$(M$,J,1)
+                814 X=X+32
+            815 NEXT J
+        820 M$="":Y=120:X=4
+    830 NEXT K,I
+    835 close #1
+840 screen 0: cls: color 15,1,1
 
-875 input "¿Otra partida S/N ";a$
-880 if a$="s" or a$="S" then goto 80
-890 if a$="n" or a$="N" then print "adios":for i=0 to 500: next i:cls:end
-895 goto 930
+850 input "¿Otra partida S/N ";a$
+860 if a$="s" or a$="S" then :goto 80
+870 if a$="n" or a$="N" then print "adios": for i=0 to 500: next i:cls:end
+880 goto 875
 
 
 
@@ -124,9 +124,10 @@
 940 locate 0,10
 960 print " Te han matado!!"
 970 input "¿Otra partida S/N ";a$
+875 close #1
 980 if a$="s" or a$="S" then goto 80
 990 if a$="n" or a$="N" then print "adios":for i=0 to 500: next i:cls:end
-995 goto 995
+995 goto 980
 
 
 990 end
@@ -193,8 +194,8 @@
 
 
 
-    3000 if pe=0 then interval off: close #1: gosub 900
-    3010 if pc=7 then interval off: close #1:gosub 700
+    3000 if pe=0 then interval off: close: gosub 900
+    3010 if pc=10 then interval off: close: gosub 700
 3040 return
 
 
@@ -261,16 +262,12 @@
 
     7000 'line (0,0)-(w, 10), 14, bf
     7010 preset (20,10)
-    7020 print #1, "P: "pe", capturas: "pc
+    7020 print #1,  chr$(205)" "pe", capturas: "pc
     7030 'preset (120,10)
     7040 'print #1, "z: x"zx", y" zy
 7050 return
 
 
-
-    7100 preset (30,0)
-    7110 print #1, "   "pe"     "
-7120 return
 
 
 
@@ -415,7 +412,7 @@
 
     20010 dim ex(en),ey(en),ew(en),eh(en),es(en),ep(en),ev(en),ec(en),ed(en)
 
-    20020 zx=0:zy=w-90:zw=16:zh=16:zs=18:zs=17:zp=17:zv=30:zc=0   
+    20020 zx=0:zy=w-90:zw=16:zh=16:zs=18:zs=17:zp=17:zv=10:zc=0   
     20030 for i=0 to en
 
         20040 ey(i)=rnd(1)*100
@@ -460,7 +457,7 @@
         21130 if ep(i)=es(i) then ep(i)=es(i)+1 else ep(i)=es(i)
     21140 next i
 
-    21150 zx=zx+1
+    21150 zx=zx+zv
     21160 if zx>256 then zx=0
 
     21170 'if zp=zs then zp=zs+1 else zp=zs
